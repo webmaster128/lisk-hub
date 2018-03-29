@@ -56,7 +56,7 @@
 
 .delegateUsername {
   font-weight: bold;
-  margin-left: 10px;
+  margin-left: 5px;
 }
 
 @media (--xLarge-viewport) {
