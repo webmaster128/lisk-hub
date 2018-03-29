@@ -21,6 +21,7 @@ class accountTransactions extends React.Component {
         <SendTo
           balance={this.props.balance}
           address={this.props.match.params.address}
+          delegate={this.props.delegate}
           t={this.props.t}
           notLoading={this.props.notLoading}
         />
@@ -36,6 +37,7 @@ class accountTransactions extends React.Component {
 }
 
 const mapStateToProps = state => ({
+  delegateUser: state.account.delegate.username ? state.account.delegate.username : null,
   balance: state.transactions.account ? state.transactions.account.balance : null,
   notLoading: state.loading.length === 0,
 });
