@@ -256,4 +256,25 @@ describe('Account middleware', () => {
     expect(store.dispatch).to.have.been
       .calledWith(accountUpdated({ expireTime: clock.now + lockDuration }));
   });
+
+  it('should update delegate in account when updating account and account isDelegate', () => {
+    const updateAccountAction = {
+      type: actionTypes.accountUpdated,
+      data: { delegate: { username: 'peter' } },
+    };
+
+    const delegatePhassprasse = accounts['delegate candidate'].passphrase;
+
+    store.getState = () => ({
+      ...state,
+      account: { ...state.account, passphrase: delegatePhassprasse },
+    });
+
+    middleware(store)(next)(updateAccountAction);
+    expect(store.dispatch).to.have.been
+      .calledWith(accountUpdated({
+        ...state.account,
+        delegate: updateAccountAction.data.delegate,
+      }));
+  });
 });
