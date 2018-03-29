@@ -38,8 +38,7 @@ const loginMiddleware = store => next => (action) => {
           ...accountBasics,
           ...{ delegate: delegateData.delegate, isDelegate: true, expireTime: duration },
         }));
-      }).catch((err) => {
-        console.log('getDelegate-->', err);
+      }).catch(() => {
         store.dispatch(accountLoggedIn({
           ...accountData,
           ...accountBasics,
