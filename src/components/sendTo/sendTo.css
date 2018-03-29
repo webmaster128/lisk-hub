@@ -54,6 +54,10 @@
   }
 }
 
+.delegateRow {
+  font-size: 18px;
+}
+
 .delegateUsername {
   font-weight: bold;
   margin-left: 5px;

@@ -11,7 +11,8 @@ import * as delegateApi from '../../utils/api/delegate';
 import middleware from './account';
 import transactionTypes from '../../constants/transactionTypes';
 
-describe('Account middleware', () => {
+/* eslint-disable mocha/no-exclusive-tests */
+describe.only('Account middleware', () => {
   const { lockDuration } = accountConfig;
   let store;
   let next;
@@ -80,7 +81,7 @@ describe('Account middleware', () => {
     store.getState = () => (state);
 
     next = spy();
-    stubGetAccount = stub(accountApi, 'getAccount').returnsPromise();
+    stubGetAccount = stub(accountApi, 'getAccount').returnsPromise().resolves({});
     stubTransactions = stub(accountApi, 'transactions').returnsPromise().resolves(true);
   });
 
@@ -257,24 +258,22 @@ describe('Account middleware', () => {
       .calledWith(accountUpdated({ expireTime: clock.now + lockDuration }));
   });
 
-  it('should update delegate in account when updating account and account isDelegate', () => {
+  it.only('should update delegate in account when updating account and account isDelegate', () => {
     const updateAccountAction = {
-      type: actionTypes.accountUpdated,
-      data: { delegate: { username: 'peter' } },
+      type: actionTypes.accountLoggedIn,
+      data: { delegate: { username: 'peter' }, isDelegate: true },
     };
-
-    const delegatePhassprasse = accounts['delegate candidate'].passphrase;
 
     store.getState = () => ({
       ...state,
-      account: { ...state.account, passphrase: delegatePhassprasse },
     });
 
     middleware(store)(next)(updateAccountAction);
-    expect(store.dispatch).to.have.been
+    expect(store.dispatch.getCall(0)).to.have.been
       .calledWith(accountUpdated({
         ...state.account,
-        delegate: updateAccountAction.data.delegate,
+        delegate: accounts['delegate candidate'],
       }));
   });
 });
+/* eslint-enable mocha/no-exclusive-tests */

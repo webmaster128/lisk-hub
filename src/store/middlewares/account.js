@@ -41,10 +41,12 @@ const updateAccountData = (store, action) => {
     }
     let accountUpdatedWithDelegate = { ...result };
 
-    if ((action.data.isDelegate && !result.delegate) ||
-        (result.delegate.username !== action.data.delegate.username)) {
+    console.log(result.delegate);
+    if (action.type === actionTypes.accountLoggedIn &&
+        ((action.data.isDelegate && !result.delegate) ||
+        (result.delegate.username !== action.data.delegate.username))) {
       accountUpdatedWithDelegate = {
-        ...accountUpdatedWithDelegate,
+        ...result,
         delegate: { ...action.data.delegate },
       };
     }
